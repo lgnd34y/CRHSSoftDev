@@ -1,3 +1,5 @@
+from sklearnex import patch_sklearn
+patch_sklearn()
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
@@ -20,7 +22,7 @@ y = df_main.iloc[:, 0]
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42, stratify=y)
 
-model = RandomForestClassifier(n_estimators=1000, max_depth=40, random_state=42, n_jobs=-1,class_weight="balanced")
+model = RandomForestClassifier(n_estimators=200, max_depth=40, random_state=42, n_jobs=-1,class_weight="balanced")
 
 model.fit(x_train, y_train)
 
