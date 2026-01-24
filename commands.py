@@ -3,7 +3,6 @@ import mediapipe as mp
 import numpy as np
 import joblib
 import csv
-import pyttsx3
 from collections import deque, Counter
 import time
 import config 
@@ -78,8 +77,8 @@ def multiple_letters_screen_text(conf, buffer, model, probs, last_add, text, sho
     return text, last_add, show_sn, sn_time, space_was_added, back_was_added
 
 def initialize_frame(cap, hands):
-    success = cap.read()[0]
-    img = cap.read()[1]
+    success, img = cap.read()
+    
     if not success: 
         return None, None
     frame = cv2.flip(img, 1)
@@ -273,8 +272,7 @@ def teach_new_sign(cap, hands, normalization_fn, current_model, vcam):
 
     
     while len(recorded_samples) < 30:
-        ret = cap.read()[0]
-        frame = cap.read()[1]
+        ret, frame = cap.read()
         if not ret: 
             break
         frame = cv2.flip(frame, 1)
@@ -320,7 +318,7 @@ def teach_new_sign(cap, hands, normalization_fn, current_model, vcam):
     X = df.iloc[:, 1:].values
     y = df.iloc[:, 0].astype(str).values
     
-    new_model = RandomForestClassifier(n_estimators=100, n_jobs=-1, random_state=42)
+    new_model = RandomForestClassifier(n_estimators=200, n_jobs=-1, random_state=42)
     new_model.fit(X, y)
     
     return new_model
